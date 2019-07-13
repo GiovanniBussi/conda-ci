@@ -2,8 +2,8 @@
 set -e
 
 if [[ $(uname) == Darwin ]]; then
-  export CFLAGS="${CFLAGS} -i sysroot ${CONDA_BUILD_SYSROOT}"
-  export CXXFLAGS="${CFLAGS} -i sysroot ${CONDA_BUILD_SYSROOT}"
+  export CFLAGS="${CFLAGS} -isysroot ${CONDA_BUILD_SYSROOT}"
+  export CXXFLAGS="${CFLAGS} -isysroot ${CONDA_BUILD_SYSROOT}"
 fi
 
 $CXX $CPPFLAGS $CXXFLAGS $LIBS $LDFLAGS testme.cpp -o testme
