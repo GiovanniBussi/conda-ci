@@ -22,8 +22,6 @@
 
 export COLUMNS=80
 
-export CONDA_HOME=$HOME/opt/conda
-
 # file to be source at the end of subshell:
 export CONDABUILD_CI_SOURCEME="$(mktemp)"
 
@@ -33,6 +31,10 @@ export CONDABUILD_CI_SOURCEME="$(mktemp)"
 # 1. as ./conda-ci
 # 2. as source ./conda-ci
 
+# default location
+export CONDA_PREFIX=$HOME/opt/conda
+
+
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     csys=Linux
 elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
@@ -41,7 +43,6 @@ else
     echo "Unsupported system $TRAVIS_OS_NAME"
     exit 1
 fi
-
 
 action=$1
 shift
@@ -54,7 +55,7 @@ echo "conda-ci: install"
 for opt
 do
   case "$opt" in
-  (--home=*)  CONDA_HOME="${opt#--home=}" ;;
+  (--prefix=*)  CONDA_PREFIX="${opt#--prefix=}" ;;
   (*) echo "macports-ci: unknown option $opt"
       exit 1 ;;
   esac
@@ -62,14 +63,13 @@ done
 
 pushd "$(mktemp -d)"
 
-export PATH="$CONDA_HOME/bin:$PATH"
-export COLUMNS=80
-echo "PATH=\"$CONDA_HOME/bin:\$PATH\""  > "$CONDABUILD_CI_SOURCEME"
-echo "export COLUMS=80"  >> "$CONDABUILD_CI_SOURCEME"
+export PATH="$CONDA_PREFIX/bin:$PATH"
+echo "PATH=\"$CONDA_PREFIX/bin:\$PATH\""  > "$CONDABUILD_CI_SOURCEME"
 
 curl -LO https://repo.continuum.io/miniconda/Miniconda3-latest-$csys-x86_64.sh
-bash Miniconda3-latest-$csys-x86_64.sh -b -f -p $CONDA_HOME
+bash Miniconda3-latest-$csys-x86_64.sh -b -f -p "$CONDA_PREFIX"
 rm Miniconda3-latest-$csys-x86_64.sh
+source activate
 conda config --set always_yes yes --set changeps1 no
 conda update -q conda
 conda info -a
@@ -98,3 +98,4 @@ esac
 
 # allows setting env var if necessary:
 source "$CONDABUILD_CI_SOURCEME"
+source activate
