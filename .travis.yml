@@ -4,8 +4,6 @@ matrix:
     dist: xenial
   - os: linux
     dist: trusty
-  - os: linux
-    dist: precise
   - os: osx
     osx_image: xcode11
   - os: osx
@@ -18,7 +16,22 @@ matrix:
     osx_image: xcode7.3
 
 script:
+# install conda
   - source conda-ci install
+  - echo CONDA_PREFIX is "$CONDA_PREFIX"
   - conda list
+# create a new environment and install conda-build
+  - conda create --name testenv
+  - conda activate testenv
   - source conda-ci install-conda-build
+  - conda list
+# build test recipe
   - conda build recipe
+  - ls "$CONDA_PREFIX"/conda-bld/$$TRAVIS_OS_NAME-64/testme*bz2
+# switch to base environment and install conda-build
+  - conda activate
+  - source conda-ci install-conda-build
+  - conda list
+# build test recipe
+  - conda build recipe
+  - ls "$CONDA_PREFIX"/conda-bld/$$TRAVIS_OS_NAME-64/testme*bz2
