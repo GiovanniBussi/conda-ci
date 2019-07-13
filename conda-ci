@@ -63,15 +63,16 @@ done
 
 pushd "$(mktemp -d)"
 
-export PATH="$CONDA_PREFIX/bin:$PATH"
-source activate base
-echo "PATH=\"$CONDA_PREFIX/bin:\$PATH\""  > "$CONDABUILD_CI_SOURCEME"
-echo "source activate base" >> "$CONDABUILD_CI_SOURCEME"
 
 curl -LO https://repo.continuum.io/miniconda/Miniconda3-latest-$csys-x86_64.sh
 bash Miniconda3-latest-$csys-x86_64.sh -b -f -p "$CONDA_PREFIX"
 rm Miniconda3-latest-$csys-x86_64.sh
-source activate
+
+export PATH="$CONDA_PREFIX/bin:$PATH"
+echo "PATH=\"$CONDA_PREFIX/bin:\$PATH\""  > "$CONDABUILD_CI_SOURCEME"
+source activate base
+echo "source activate base" >> "$CONDABUILD_CI_SOURCEME"
+
 conda config --set always_yes yes --set changeps1 no
 conda update -q conda
 conda info -a
