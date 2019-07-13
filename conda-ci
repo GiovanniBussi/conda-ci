@@ -71,6 +71,8 @@ curl -LO https://repo.continuum.io/miniconda/Miniconda3-latest-$csys-x86_64.sh
 bash Miniconda3-latest-$csys-x86_64.sh -b -f -p $CONDA_HOME
 rm Miniconda3-latest-$csys-x86_64.sh
 conda config --set always_yes yes --set changeps1 no
+conda update -q conda
+conda info -a
 
 ;;
 
@@ -83,8 +85,6 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 fi
 
 conda config --set anaconda_upload no # not automatically at least
-conda update -q conda
-conda info -a
 conda install conda-build conda-verify anaconda-client
 
 ;;
