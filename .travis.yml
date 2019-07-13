@@ -27,11 +27,11 @@ script:
   - conda list
 # build test recipe
   - conda build recipe
-  - ls "$CONDA_PREFIX"/conda-bld/$$TRAVIS_OS_NAME-64/testme*bz2
+  - ls "$CONDA_PREFIX"/conda-bld/$TRAVIS_OS_NAME-64/testme*bz2
 # switch to base environment and install conda-build
-  - conda activate
+  - conda activate base
   - source conda-ci install-conda-build
   - conda list
 # build test recipe
   - conda build recipe
-  - ls "$CONDA_PREFIX"/conda-bld/$$TRAVIS_OS_NAME-64/testme*bz2
+  - ls "$CONDA_PREFIX"/conda-bld/$TRAVIS_OS_NAME-64/testme*bz2
