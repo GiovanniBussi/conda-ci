@@ -32,8 +32,6 @@ export CONDABUILD_CI_SOURCEME="$(mktemp)"
 # 1. as ./conda-ci
 # 2. as source ./conda-ci
 
-# default location
-export CONDA_PREFIX=$HOME/opt/conda
 
 
 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -50,6 +48,9 @@ shift
 
 case "$action" in
 (install)
+
+# default location
+export CONDA_PREFIX=$HOME/opt/conda
 
 echo "conda-ci: install"
 
