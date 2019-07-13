@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 
 if [[ $(uname) == Darwin ]]; then
   export CFLAGS="${CFLAGS} -isysroot ${CONDA_BUILD_SYSROOT}"
