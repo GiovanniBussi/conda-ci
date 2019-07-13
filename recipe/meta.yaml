@@ -1,0 +1,19 @@
+package:
+  name: testme
+  version: 1.0
+
+build:
+  number: 0
+
+source:
+  path: .
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+
+test:
+  commands:
+    - testme
+
