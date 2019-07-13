@@ -21,4 +21,4 @@ script:
   - source conda-ci install
   - conda list
   - source conda-ci install-conda-build
-  - conda build testme
+  - conda build recipe
