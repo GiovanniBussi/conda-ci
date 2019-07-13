@@ -26,6 +26,8 @@ export COLUMNS=80
 export CONDABUILD_CI_SOURCEME="$(mktemp)"
 
 (
+
+set -e 
 # start subshell
 # this allows to use the script in two ways:
 # 1. as ./conda-ci
