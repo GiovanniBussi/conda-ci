@@ -14,11 +14,21 @@ matrix:
     osx_image: xcode8.3
   - os: osx
     osx_image: xcode7.3
+  - os: linux
+    env: OPT="--prefix $HOME/test/prefix"
+  - os: osx
+    env: OPT="--prefix $HOME/test/prefix"
 
 script:
 # install conda
-  - source conda-ci install
+  - source conda-ci install $OPT
   - echo CONDA_PREFIX is "$CONDA_PREFIX"
+# check if conda executable is in the right place
+  - if [[ -n "$OPT" ]]; then
+        ls "$OPT"/bin/conda
+    else
+        ls "$HOME"/opt/bin/conda
+    if
   - conda list
   - source conda-ci install-conda-build
   - conda list
