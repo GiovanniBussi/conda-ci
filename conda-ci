@@ -58,7 +58,7 @@ for opt
 do
   case "$opt" in
   (--prefix=*)  CONDA_PREFIX="${opt#--prefix=}" ;;
-  (*) echo "macports-ci: unknown option $opt"
+  (*) echo "conda-ci: unknown option $opt"
       exit 1 ;;
   esac
 done
