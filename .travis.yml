@@ -29,5 +29,5 @@ script:
   - source conda-ci install-conda-build
   - conda list
 # build test recipe
-  - conda build recipe
+  - conda build -c conda-forge recipe
   - ls "$CONDA_PREFIX"/conda-bld/$TRAVIS_OS_NAME-64/testme*bz2
