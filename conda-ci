@@ -22,6 +22,10 @@
 
 export COLUMNS=80
 
+if [ "$GITHUB_ACTIONS" = true ] ; then
+    echo "::set-env name=COLUMNS::$COLUMNS"
+fi
+
 # file to be source at the end of subshell:
 export CONDABUILD_CI_SOURCEME="$(mktemp)"
 
@@ -33,13 +37,14 @@ export CONDABUILD_CI_SOURCEME="$(mktemp)"
 # 2. as source ./conda-ci
 
 
+uname="$(uname)"
 
-if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+if [[ "$uname" == "Linux" ]]; then
     csys=Linux
-elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+elif [[ "$uname" == "Darwin" ]]; then
     csys=MacOSX
 else
-    echo "Unsupported system $TRAVIS_OS_NAME"
+    echo "Unsupported system $uname"
     exit 1
 fi
 
@@ -68,6 +73,11 @@ pushd "$(mktemp -d)"
 export PATH="$CONDA_PREFIX/bin:$PATH"
 echo "PATH=\"$CONDA_PREFIX/bin:\$PATH\""  > "$CONDABUILD_CI_SOURCEME"
 
+if [ "$GITHUB_ACTIONS" = true ] ; then
+    echo 'echo "::set-env name=PATH::$PATH"' >> "$CONDABUILD_CI_SOURCEME"
+fi
+
+
 curl -LO https://repo.continuum.io/miniconda/Miniconda3-latest-$csys-x86_64.sh
 bash Miniconda3-latest-$csys-x86_64.sh -b -f -p "$CONDA_PREFIX"
 rm Miniconda3-latest-$csys-x86_64.sh
@@ -83,7 +93,7 @@ conda info -a
 
 (install-conda-build)
 
-if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+if [[ "$uname" == "Darwin" ]]; then
     curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
     sudo mkdir -p /opt
     sudo tar -xf MacOSX10.9.sdk.tar.xz -C /opt
