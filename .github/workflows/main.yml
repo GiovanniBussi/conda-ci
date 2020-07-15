@@ -1,4 +1,4 @@
-name: test
+name: CI
 
 on:
   push:
@@ -16,9 +16,12 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: Test
+    - name: Install
       run: |
         source conda-ci install $OPT
+
+    - name: Test
+      run: |
         echo CONDA_PREFIX is "$CONDA_PREFIX"
         conda list
         source conda-ci install-conda-build
