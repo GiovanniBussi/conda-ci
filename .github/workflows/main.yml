@@ -22,6 +22,7 @@ jobs:
 
     - name: Test
       run: |
+        source activate base
         echo CONDA_PREFIX is "$CONDA_PREFIX"
         conda list
         source conda-ci install-conda-build
