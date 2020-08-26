@@ -1,7 +1,7 @@
 matrix:
   include:
   - os: linux
-    dist: fossa
+    dist: focal
   - os: linux
     dist: bionic
   - os: linux
