@@ -15,9 +15,11 @@ jobs:
     strategy:
       matrix:
         os:
-          - ubuntu-22.04
           - ubuntu-20.04
+          - ubuntu-22.04
           - macos-12
+          - macos-13
+          - macos-14
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -36,4 +38,4 @@ jobs:
         source conda-ci install-conda-build
         conda list
         conda build -c conda-forge recipe
-        ls "$CONDA_PREFIX"/conda-bld/*-64/testme*bz2
+        ls "$CONDA_PREFIX"/conda-bld/*/testme*bz2
