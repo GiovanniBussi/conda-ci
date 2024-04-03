@@ -48,7 +48,7 @@ if [[ "$uname" == "Linux" ]]; then
 elif [[ "$uname" == "Darwin" ]]; then
     if [[ "$uname_m" == "x86_64" ]] ; then
       csys=MacOSX-x86_64
-    elif [[ "$uname_m" == "arm" ]] ; then
+    elif [[ "$uname_m" == "arm64" ]] ; then
       csys=MacOSX-arm64
     else
       echo "Unsupported system Darwin $uname_m"
@@ -108,7 +108,7 @@ if [[ "$uname" == "Darwin" ]]; then
     curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
     sudo mkdir -p /opt
     sudo tar -xf MacOSX10.9.sdk.tar.xz -C /opt
-  elif [[ "$uname_m" == "arm" ]] ; then
+  elif [[ "$uname_m" == "arm64" ]] ; then
     curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz
     sudo mkdir -p /opt
     sudo tar -xf MacOSX11.0.sdk.tar.xz -C /opt
