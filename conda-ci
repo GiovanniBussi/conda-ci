@@ -38,11 +38,22 @@ export CONDABUILD_CI_SOURCEME="$(mktemp)"
 
 
 uname="$(uname)"
+uname_m="$(uname -m)"
+
+echo "uname: $uname"
+echo "uname_m: $uname_m"
 
 if [[ "$uname" == "Linux" ]]; then
-    csys=Linux
+    csys=Linux-x86_64
 elif [[ "$uname" == "Darwin" ]]; then
-    csys=MacOSX
+    if [[ "$uname_m" == "x86_64" ]] ; then
+      csys=MacOSX-x86_64
+    elif [[ "$uname_m" == "arm64" ]] ; then
+      csys=MacOSX-arm64
+    else
+      echo "Unsupported system Darwin $uname_m"
+      exit 1
+    fi
 else
     echo "Unsupported system $uname"
     exit 1
@@ -77,9 +88,9 @@ if [ "$GITHUB_ACTIONS" = true ] ; then
     echo "$CONDA_PREFIX/bin" >> "$GITHUB_PATH"
 fi
 
-curl -LO https://repo.continuum.io/miniconda/Miniconda3-latest-$csys-x86_64.sh
-bash Miniconda3-latest-$csys-x86_64.sh -b -f -p "$CONDA_PREFIX"
-rm Miniconda3-latest-$csys-x86_64.sh
+curl -LO https://repo.continuum.io/miniconda/Miniconda3-latest-$csys.sh
+bash Miniconda3-latest-$csys.sh -b -f -p "$CONDA_PREFIX"
+rm Miniconda3-latest-$csys.sh
 
 source activate base
 echo "source activate base" >> "$CONDABUILD_CI_SOURCEME"
@@ -93,9 +104,15 @@ conda info -a
 (install-conda-build)
 
 if [[ "$uname" == "Darwin" ]]; then
+  if [[ "$uname_m" == "x86_64" ]] ; then
     curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
     sudo mkdir -p /opt
     sudo tar -xf MacOSX10.9.sdk.tar.xz -C /opt
+  elif [[ "$uname_m" == "arm64" ]] ; then
+    curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz
+    sudo mkdir -p /opt
+    sudo tar -xf MacOSX11.0.sdk.tar.xz -C /opt
+  fi
 fi
 
 conda config --set anaconda_upload no # not automatically at least
