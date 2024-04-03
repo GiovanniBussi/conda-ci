@@ -38,16 +38,20 @@ export CONDABUILD_CI_SOURCEME="$(mktemp)"
 
 
 uname="$(uname)"
+uname_m="$(uname -m)"
+
+echo "uname: $uname"
+echo "uname_m: $uname_m"
 
 if [[ "$uname" == "Linux" ]]; then
     csys=Linux-x86_64
 elif [[ "$uname" == "Darwin" ]]; then
-    if [[ "(uname -m)" == "x86_64" ]] ; then
+    if [[ "$uname_m" == "x86_64" ]] ; then
       csys=MacOSX-x86_64
-    elif [[ "(uname -m)" == "arm" ]] ; then
+    elif [[ "$uname_m" == "arm" ]] ; then
       csys=MacOSX-arm64
     else
-      echo "Unsupported system Darwin $(uname -m)"
+      echo "Unsupported system Darwin $uname_m"
       exit 1
     fi
 else
@@ -100,11 +104,11 @@ conda info -a
 (install-conda-build)
 
 if [[ "$uname" == "Darwin" ]]; then
-  if [[ "$(uname -m)" == "x86_64" ]] ; then
+  if [[ "$uname_m" == "x86_64" ]] ; then
     curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
     sudo mkdir -p /opt
     sudo tar -xf MacOSX10.9.sdk.tar.xz -C /opt
-  elif [[ "$(uname -m)" == "arm" ]] ; then
+  elif [[ "$uname_m" == "arm" ]] ; then
     curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz
     sudo mkdir -p /opt
     sudo tar -xf MacOSX11.0.sdk.tar.xz -C /opt
