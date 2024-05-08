@@ -105,14 +105,26 @@ conda info -a
 
 if [[ "$uname" == "Darwin" ]]; then
   if [[ "$uname_m" == "x86_64" ]] ; then
-    curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
-    sudo mkdir -p /opt
-    sudo tar -xf MacOSX10.9.sdk.tar.xz -C /opt
+    MACOS_SDK=10.9
   elif [[ "$uname_m" == "arm64" ]] ; then
-    curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz
-    sudo mkdir -p /opt
-    sudo tar -xf MacOSX11.0.sdk.tar.xz -C /opt
+    MACOS_SDK=11.0
   fi
+fi
+
+for opt
+do
+  case "$opt" in
+  (--sdk=*)  MACOS_SDK="${opt#--sdk=}" ;;
+  (*) echo "conda-ci: unknown option $opt"
+      exit 1 ;;
+  esac
+done
+
+if [[ "$uname" == "Darwin" ]]; then
+  echo "Downloading SDK $MACOS_SDK"
+  curl -LO https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX$MACOS_SDK.sdk.tar.xz
+  sudo mkdir -p /opt
+  sudo tar -xf MacOSX$MACOS_SDK.sdk.tar.xz -C /opt
 fi
 
 conda config --set anaconda_upload no # not automatically at least
