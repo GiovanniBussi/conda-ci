@@ -105,7 +105,7 @@ conda info -a
 
 if [[ "$uname" == "Darwin" ]]; then
   if [[ "$uname_m" == "x86_64" ]] ; then
-    MACOS_SDK=10.9
+    MACOS_SDK=10.13
   elif [[ "$uname_m" == "arm64" ]] ; then
     MACOS_SDK=11.0
   fi
