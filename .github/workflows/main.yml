@@ -38,4 +38,6 @@ jobs:
         source conda-ci install-conda-build
         conda list
         conda build -c conda-forge recipe
-        ls "$CONDA_PREFIX"/conda-bld/*/testme*bz2
+        #tree  "$CONDA_PREFIX"/conda-bld
+        #tree  "$CONDA_PREFIX"
+        ls "$CONDA_PREFIX"/conda-bld/*/testme*conda
