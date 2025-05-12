@@ -128,7 +128,7 @@ if [[ "$uname" == "Darwin" ]]; then
 fi
 
 conda config --set anaconda_upload no # not automatically at least
-conda install conda-build conda-verify anaconda-client
+conda install conda-build anaconda-client
 
 ;;
 (*)
