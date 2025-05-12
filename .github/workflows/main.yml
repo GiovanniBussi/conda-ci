@@ -14,7 +14,6 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-20.04
           - ubuntu-22.04
           - ubuntu-24.04
           - macos-12
@@ -39,6 +38,6 @@ jobs:
         source conda-ci install-conda-build
         conda list
         conda build -c conda-forge recipe
-        tree  "$CONDA_PREFIX"/conda-bld
-        tree  "$CONDA_PREFIX"
-        ls "$CONDA_PREFIX"/conda-bld/*/testme*bz2
+        #tree  "$CONDA_PREFIX"/conda-bld
+        #tree  "$CONDA_PREFIX"
+        ls "$CONDA_PREFIX"/conda-bld/*/testme*conda
