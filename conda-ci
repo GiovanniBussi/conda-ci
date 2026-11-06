@@ -135,7 +135,9 @@ if [[ "$uname" == "Darwin" ]]; then
 fi
 
 conda config --set anaconda_upload no # not automatically at least
-conda install conda-build anaconda-client
+# On Intel macOS, defaults' client conflicts with Miniconda's preinstalled auth package.
+# Select the compatible conda-forge client while keeping conda-build from defaults.
+conda install conda-build conda-forge::anaconda-client
 
 ;;
 (*)
