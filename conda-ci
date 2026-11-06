@@ -44,7 +44,14 @@ echo "uname: $uname"
 echo "uname_m: $uname_m"
 
 if [[ "$uname" == "Linux" ]]; then
-    csys=Linux-x86_64
+    if [[ "$uname_m" == "x86_64" ]] ; then
+      csys=Linux-x86_64
+    elif [[ "$uname_m" == "aarch64" || "$uname_m" == "arm64" ]] ; then
+      csys=Linux-aarch64
+    else
+      echo "Unsupported system Linux $uname_m"
+      exit 1
+    fi
 elif [[ "$uname" == "Darwin" ]]; then
     if [[ "$uname_m" == "x86_64" ]] ; then
       csys=MacOSX-x86_64
@@ -88,7 +95,7 @@ if [ "$GITHUB_ACTIONS" = true ] ; then
     echo "$CONDA_PREFIX/bin" >> "$GITHUB_PATH"
 fi
 
-curl -LO https://repo.continuum.io/miniconda/Miniconda3-latest-$csys.sh
+curl -LO https://repo.anaconda.com/miniconda/Miniconda3-latest-$csys.sh
 bash Miniconda3-latest-$csys.sh -b -f -p "$CONDA_PREFIX"
 rm Miniconda3-latest-$csys.sh
 
@@ -138,6 +145,11 @@ exit 1
 esac
 
 )
+CONDABUILD_CI_STATUS=$?
+if [ "$CONDABUILD_CI_STATUS" -ne 0 ] ; then
+    # Preserve setup failures both when executed and when sourced.
+    return "$CONDABUILD_CI_STATUS" 2>/dev/null || exit "$CONDABUILD_CI_STATUS"
+fi
 
 # allows setting env var if necessary:
 source "$CONDABUILD_CI_SOURCEME"
