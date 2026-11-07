@@ -139,6 +139,14 @@ conda config --set anaconda_upload no # not automatically at least
 # Select the compatible conda-forge client while keeping conda-build from defaults.
 conda install conda-build conda-forge::anaconda-client
 
+# Keep PLUMED's legacy `anaconda -t TOKEN upload ...` syntax independent of
+# other installed Anaconda CLI plugins. This is the client's documented
+# compatibility mode, also needed by later workflow upload steps.
+echo "export ANACONDA_CLIENT_FORCE_STANDALONE=1" >> "$CONDABUILD_CI_SOURCEME"
+if [ "$GITHUB_ACTIONS" = true ] ; then
+    echo "ANACONDA_CLIENT_FORCE_STANDALONE=1" >> "$GITHUB_ENV"
+fi
+
 ;;
 (*)
 echo "error"

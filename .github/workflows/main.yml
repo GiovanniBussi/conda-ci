@@ -35,7 +35,7 @@ jobs:
         echo CONDA_PREFIX is "$CONDA_PREFIX"
         conda list
         source conda-ci install-conda-build
-        anaconda upload --help >/dev/null
+        anaconda upload --help
         conda list
         conda build -c conda-forge recipe
         #tree  "$CONDA_PREFIX"/conda-bld
